@@ -5,6 +5,8 @@ var util = require('./util');
 var mysql = require('mysql');
 //var _mysql = require('./mysql');
 var url = 'http://www.zhihu.com/question/';
+var tempCount = 1;
+var timeCount = 0;
 /**
  * the first question of zhihu
  * @type {number}
@@ -23,6 +25,9 @@ var connection = mysql.createConnection({
 var coll = function (id) {
     //tr.begin();
     //console.log(start.getTime());
+    var a = new Date();
+    var start = a.getTime();
+
     var currentQuestionUrl = url+id;
     util.wget(currentQuestionUrl, function ($, res, body) {
         var status = res.statusCode;
@@ -35,7 +40,22 @@ var coll = function (id) {
             var voteCount = util.clearReturn(topAnswer.find('.zm-votebar .up .count').text());
             connection.query('INSERT INTO `zhihu`.`QANDA` (`QUES_ID`, `QUES_TITLE`, `QUES_STATUS`, `TOP_ANSER_COUNT`) VALUES ("'+id+'", "'+title+'", "'+status+'", "'+voteCount+'")', function (err, rows, fields) {
                 util.errHandle(err);
-                console.error(id);
+                var b = new Date();
+                var end = b.getTime();
+                timeCount += (end-start);
+
+                var avgTime = timeCount/tempCount;
+                tempCount++;
+                console.error(id+' : '+(end-start)+',avg :'+avgTime);
+                a=null;
+                start=null;
+                status=null;
+                title=null;
+                topAnswer=null;
+                voteCount=null;
+                b=null;
+                end=null;
+                avgTime=null;
                 return coll(++id);
 
             });
