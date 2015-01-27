@@ -46,16 +46,16 @@ var coll = function (id) {
                 //
                 //var avgTime = timeCount/tempCount;
                 //tempCount++;
-                //console.error(id+' : '+(end-start)+',avg :'+avgTime);
-                a=null;
-                start=null;
+                console.error(id+'---->'+status);
+                //a=null;
+                //start=null;
                 status=null;
                 title=null;
                 topAnswer=null;
                 voteCount=null;
-                b=null;
-                end=null;
-                avgTime=null;
+                //b=null;
+                //end=null;
+                //avgTime=null;
                 return coll(++id);
 
             });
