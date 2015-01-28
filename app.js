@@ -5,8 +5,8 @@ var util = require('./util');
 var mysql = require('mysql');
 //var _mysql = require('./mysql');
 var url = 'http://www.zhihu.com/question/';
-var tempCount = 1;
-var timeCount = 0;
+//var tempCount = 1;
+//var timeCount = 0;
 /**
  * the first question of zhihu
  * @type {number}
