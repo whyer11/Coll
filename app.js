@@ -4,16 +4,8 @@
 var util = require('./util');
 var orm = require('orm');
 var url = 'http://www.zhihu.com/question/';
+var config = require('./config');
 var questionId = 19550225;
-var config = {
-    protocol: "mysql",
-    host: "127.0.0.1",
-    database: "zhihuo",
-    port: '3306',
-    query: {pool: true},
-    user: "root",
-    password: ""
-}
 orm.connect(config, function (err, db) {
     var question = db.define("question", {
         id: Number,

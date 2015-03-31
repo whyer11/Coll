@@ -4,9 +4,9 @@
 module.exports = {
     protocol: "mysql",
     host: "127.0.0.1",
-    database: "zhihuo",
+    database: "",//you database
     port: '3306',
     query: {pool: true},
-    user: "root",
-    password: ""
+    user: "root",//your username
+    password: ""//your password
 }

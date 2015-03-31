@@ -1,3 +1,4 @@
 .idea/*
 node_modules/*
 v8.log
+config.js
