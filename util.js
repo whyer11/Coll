@@ -3,7 +3,8 @@
  */
 
 var request = require('request');
-var env = require('jsdom').env;
+//var env = require('jsdom').env;
+var cheerio = require('cheerio');
 module.exports = {
     clearReturn: function (str) {
         return str.replace(/\n/gm, '');
@@ -11,11 +12,8 @@ module.exports = {
     wget: function (url,cb) {
         request(url, function (err, res, body) {
             if(err) throw err;
-            env(body, function (err, window) {
-                if(err) throw err;
-                var $ = require('jquery')(window);
-                return cb($,res,body);
-            })
+            var $ = cheerio.load('body');
+            cb($,res,body);
         })
     },
     TimeRecord: function () {
