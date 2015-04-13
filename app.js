@@ -21,7 +21,7 @@ orm.connect(config, function (err, db) {
         var currentQuestionUrl = url + qid;
         util.wget(currentQuestionUrl, function ($, res, body) {
             var title = util.clearReturn($(body).find('.zm-item-title').text());
-            var toper = parseInt(util.clearReturn($(body).find('#zh-question-answer-wrap').children().first().find('.zm-votebar .up .count').text()).replace('K','000'));
+            var toper = parseInt($(body).find('.zm-item-vote-info').data('votecount'));
             if (res.statusCode == '200') {
                 //console.log(qid+'----'+toper);
                 //something(++qid);
