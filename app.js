@@ -8,7 +8,7 @@ var config     = require ('./config');
 var questionId = 19550225;
 orm.connect (config, function (err, db) {
     var question = db.define ("question", {
-        id: Number,
+        id:{ type: 'serial', key: true },
         QUES_ID: Number,
         QUES_TOP: Number,
         QUES_TITLE: {type: 'text'},
@@ -59,5 +59,4 @@ orm.connect (config, function (err, db) {
             something (questionId);
         }
     });
-    //something(23684594);
 })
