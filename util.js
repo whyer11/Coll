@@ -10,7 +10,13 @@ module.exports = {
         return str.replace(/\n/gm, '');
     },
     wget: function (url,cb) {
-        request(url, function (err, res, body) {
+        var options = {
+            url:url,
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.73 Safari/537.36'
+            }
+        }
+        request(options,function (err, res, body) {
             if(err) throw err;
             var $ = cheerio.load('body');
             cb($,res,body);

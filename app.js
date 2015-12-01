@@ -8,13 +8,14 @@ var questionId = 19550225;
 var config = {
     protocol: "mysql",
     host: "127.0.0.1",
-    database: "zhihuo",
+    database: "zhihu",
     port: '3306',
     query: {pool: true},
     user: "root",
-    password: ""
+    password: "q"
 }
 orm.connect(config, function (err, db) {
+    if(err) console.log(err);
     var question = db.define("question", {
         id: Number,
         QUES_ID: Number,
@@ -29,10 +30,13 @@ orm.connect(config, function (err, db) {
         var currentQuestionUrl = url + qid;
         util.wget(currentQuestionUrl, function ($, res, body) {
             var title = util.clearReturn($(body).find('.zm-item-title').text());
-            var toper = parseInt(util.clearReturn($(body).find('#zh-question-answer-wrap').children().first().find('.zm-votebar .up .count').text()));
+            var toper = [];
+            for(var i = 0;i<$(body).find('.count').length;i++){
+                toper.push($(body).find('.count')[i].innerHTML);
+            }
+            toper.sort(function(a,b){return b-a});
+            toper = toper[0];
             if (res.statusCode == '200') {
-                //console.log(qid+'----'+toper);
-                //something(++qid);
                 question.create({
                     QUES_ID: qid,
                     QUES_TOP: toper || null,
@@ -40,7 +44,7 @@ orm.connect(config, function (err, db) {
                     STATUS: res.statusCode
                 }, function (err) {
                     if (err) console.log(err);
-                    console.log(qid + '--' + res.statusCode + '---' + (process.memoryUsage().heapUsed / process.memoryUsage().heapTotal) * 100);
+                    console.log(qid + '--' + res.statusCode + '---' + (process.memoryUsage().heapUsed / process.memoryUsage().heapTotal) * 100 +' + '+ title);
                     something(++qid);
                 });
             } else {
@@ -59,6 +63,8 @@ orm.connect(config, function (err, db) {
     }
 
     db.driver.execQuery('select max(QUES_ID) as max from question', function (err, data) {
+        if(err) console.log(err);
+        console.log(data);
         console.log('已找到最大问题ID为' + data[0].max);
         if (data[0].max) {
             something(parseInt(data[0].max) + 1);
