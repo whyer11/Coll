@@ -7,7 +7,7 @@ var request = require('request');
 var cheerio = require('cheerio');
 module.exports = {
     clearReturn: function (str) {
-        return str.replace(/\n/gm, '');
+        return str.replace(/\s/gm, '');
     },
     wget: function (url,cb) {
         var options = {

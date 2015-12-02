@@ -5,6 +5,9 @@ var util = require('./util');
 var orm = require('orm');
 var url = 'http://www.zhihu.com/question/';
 var questionId = 19550225;
+var koa = require('koa');
+var route = require('koa-route');
+
 var config = {
     protocol: "mysql",
     host: "127.0.0.1",
@@ -32,10 +35,12 @@ orm.connect(config, function (err, db) {
             var title = util.clearReturn($(body).find('.zm-item-title').text());
             var toper = [];
             for(var i = 0;i<$(body).find('.count').length;i++){
-                toper.push($(body).find('.count')[i].innerHTML);
+                //console.log();
+                toper.push($($ (body).find('.count')[i]).text());
             }
-            toper.sort(function(a,b){return b-a});
+            toper = toper.sort(function(a,b){return b-a});
             toper = toper[0];
+            //console.log(toper);
             if (res.statusCode == '200') {
                 question.create({
                     QUES_ID: qid,
@@ -44,7 +49,7 @@ orm.connect(config, function (err, db) {
                     STATUS: res.statusCode
                 }, function (err) {
                     if (err) console.log(err);
-                    console.log(qid + '--' + res.statusCode + '---' + (process.memoryUsage().heapUsed / process.memoryUsage().heapTotal) * 100 +' + '+ title);
+                    console.log(qid + '--' + res.statusCode + '---'+ title);
                     something(++qid);
                 });
             } else {
@@ -55,7 +60,7 @@ orm.connect(config, function (err, db) {
                     STATUS: res.statusCode
                 }, function (err) {
                     if (err) console.log(err);
-                    console.log(qid + '--' + res.statusCode + '---' + (process.memoryUsage().heapUsed / process.memoryUsage().heapTotal) * 100);
+                    console.log(qid + '--' + res.statusCode);
                     something(++qid);
                 });
             }
