@@ -1,9 +1,9 @@
 /**
  * Created by wanghuanyu on 14-12-31.
  */
-var util = require('./util');
-var orm = require('orm');
-var url = 'http://www.zhihu.com/question/';
+var util       = require ('./util');
+var orm        = require ('orm');
+var url        = 'http://www.zhihu.com/question/';
 var questionId = 19550225;
 var koa = require('koa');
 var route = require('koa-route');
@@ -28,8 +28,11 @@ orm.connect(config, function (err, db) {
     }, {
         id: 'id'
     });
+    db.sync(function (err) {
+        if(err) console.log (err);
+    })
 
-    function something(qid) {
+    function something (qid) {
         var currentQuestionUrl = url + qid;
         util.wget(currentQuestionUrl, function ($, res, body) {
             var title = util.clearReturn($(body).find('.zm-item-title').text());
@@ -53,12 +56,13 @@ orm.connect(config, function (err, db) {
                     something(++qid);
                 });
             } else {
-                question.create({
+                question.create ({
                     QUES_ID: qid,
                     QUES_TOP: null,
                     QUES_TITLE: null,
                     STATUS: res.statusCode
                 }, function (err) {
+
                     if (err) console.log(err);
                     console.log(qid + '--' + res.statusCode);
                     something(++qid);
@@ -72,68 +76,9 @@ orm.connect(config, function (err, db) {
         console.log(data);
         console.log('已找到最大问题ID为' + data[0].max);
         if (data[0].max) {
-            something(parseInt(data[0].max) + 1);
-
+            something (parseInt (data[0].max) + 1);
         } else {
-            something(questionId);
+            something (questionId);
         }
     });
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
